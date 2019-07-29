@@ -1,0 +1,93 @@
+﻿@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_LayoutPageAdmin.cshtml";
+}
+@model Admin
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <!-- include summernote css/js -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.js"></script>
+
+    <style>
+        .logo {
+            width: 90%;
+            height: 70%;
+            align-content: center;
+        }
+
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: black;
+            color: white;
+            text-align: center;
+            z-index: 99999;
+        }
+
+        .note-toolbar {
+            background-color: lightgray;
+        }
+
+        .panel-heading {
+            background-color: lightgray;
+        }
+
+        body {
+            background-color: white;
+            overflow-x: hidden;
+            overflow-y: scroll;
+            padding: 0px;
+        }
+
+        .bg-light {
+            background-color: white;
+            box-shadow: 0px 1.2091898428053205vh 1.8137847642079807vh rgb(0,0,0);
+        }
+
+        .nav {
+            border-radius: 15px;
+        }
+    </style>
+    <style>
+        .login {
+            background-color: #f1f4df;
+        }
+
+        .textbox {
+            border: none;
+            border-radius: 22px;
+        }
+    </style>
+</head>
+<br /><br /><br /><br /><br />
+<div class="login" style="font-family: 'Calibri'; margin: auto; width: 30%; border: 3px solid green; padding: 8px; border-radius:22px; font-size:18px">
+    <h2 style="text-align:center; font-family:'Calibri'"> Register </h2><br />
+    <form method="post">
+        <center>
+            <table border="0" cellpadding="10">
+                <tr>
+                    <td>@Html.LabelFor(m => m.id, new { id = "lblid" })</td>
+                    <td>@Html.TextBoxFor(m => m.id, new { id = "txtid", @class = "textbox" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(m => m.pwd, new { id = "lblpwd" })</td>
+                    <td>@Html.TextBoxFor(m => m.pwd, new { id = "txtpwd", @class = "textbox" ,@type="password"})</td>
+                </tr>
+
+                <tr>
+                    <td colspan="2"><input type="submit" value="Submit" style="width: 100%; border-radius: 22px; border: none; background-color: #58b368;" /></td>
+                </tr>
+            </table>
+            <br />
+        </center>
+    </form>
+</div>

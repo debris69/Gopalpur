@@ -1,0 +1,188 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutPageAdmin.cshtml";
+}
+@model SubCategory
+
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+<style>
+    .txt {
+        width: 100%;
+    }
+</style>
+
+<body >
+    <form id="simple_form" method="post">
+      
+        <div align="center" style="margin-top:70px;">
+            <p align="left" style="margin-top:50px;margin-left:550px;font-size:30px;">Update Sub-Category</p>
+                <table cellpadding="10">
+                    <tr>
+                        <td>
+                            @Html.LabelFor(model => model.cat_name)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(model => model.cat_name, new { id = "cat_box1", @readonly = "readonly" })
+                          
+                        </td>
+                        <td>
+                            <select id="selectNumber" onchange=" change(); empty();" oninput="return change1();" class="txt">
+                                <option>--CHOOSE A NEW CATEGORY--</option>
+                            </select>
+                            @Html.TextBoxFor(model => model.cat_id, new { id="cat_box",@style="display:none;"})
+                           
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(model => model.SubCategoryName)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(model => model.SubCategoryName, new { id="txt3",oninput="remove();"})
+                            <br />
+                          
+                        </td>
+                    </tr>
+                    <tr><td><p id="req" style="color:red;"></p></td></tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(model => model.active)
+                        </td>
+                        @if (Model != null)
+                        {
+                            if (Model.active.ToString() == "Y")
+                            {
+                                <td><input type="checkbox" id="chk1" checked="checked" onchange="return newchange();" /></td>
+                            }
+                            else
+                            {
+                                <td><input type="checkbox" id="chk1" onchange="return newchange(); " /></td>
+                            }
+                        }
+                        <td>
+                            @Html.TextBoxFor(model => model.active, new { id = "txt2",@readonly="readonly",@style="display:none;"})
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(model => model.SubID, new { id = "txt1", @style = "display:none;" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="button" value="Update" class="btn btn-success" onclick="display();" name="Update"/>
+                           
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a href="http://localhost:52280/Sub/DisplayData">Back</a>
+                        </td>
+                    </tr>
+                </table>
+            
+        </div>
+    </form>
+    @Html.Raw(ViewBag.str1)
+    @Html.Raw(ViewBag.str3)
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+<script type="text/javascript">
+    var select = document.getElementById('selectNumber');
+    var categories =Categories;
+    for (var key in categories) {
+        var opt = categories[key]
+        var el = document.createElement("option");
+        el.textContent = opt;
+        el.value = opt;
+        select.appendChild(el);
+    }
+    function change() {
+        var val = document.getElementById('selectNumber').value;
+        var categories = Categories;
+        for (var key in categories) {
+
+            if (categories[key] === val) {
+                document.getElementById('cat_box').value = key;
+            }
+        }
+    }
+    function change1() {
+        var val = document.getElementById('selectNumber').value;
+        var categories= Categories;
+        for (var key in categories) {
+
+            if (categories[key] === val) {
+                document.getElementById('cat_box1').value = categories[key];
+            }
+        }
+    }
+     function newchange()
+     {
+         var x = document.getElementById('chk1').checked;
+         if (x == false) {
+             document.getElementById('txt2').value = 'N';
+         }
+         else if (x == true) {
+             document.getElementById('txt2').value = 'Y';
+         }
+     }
+     function klick()
+     {
+         document.getElementById('cat_box1').value = '';
+         document.getElementById('cat_box').value = '';
+         document.getElementById('txt3').value = '';
+         document.getElementById('txt2').value = '';
+         document.getElementById('chk1').checked =false;
+     }
+     function display() {
+         if (document.getElementById("txt3").value === "") {
+             document.getElementById("req").innerHTML = "Sub-Category Name is required!";
+         }
+         else {
+             $.ajax({
+                 type: "post",
+                 url: "./Edit",
+                 success: function (xyz) {
+                     var frm = document.getElementById("simple_form");
+                     frm.submit();
+                 }
+
+             });
+         }
+
+     }
+     function remove() {
+         document.getElementById("req").innerHTML = "";
+         //document.getElementById("req1").innerHTML = "";
+     }
+     $(document).ready(function () {
+         $('#txt3').keyup(function () {
+             var subName = $(this).val();
+             var cat = document.getElementById("cat_box").value;
+             if (subName.length >= 3) {
+                 $.ajax({
+                     url: '/Sub/subNameExists',
+                     method: 'post',
+                     data: { name: subName, catid: cat },
+                     dataType: 'json',
+                     success: function (data) {
+                         var ele = $('#req');
+                         if (data.subNameInUse) {
+                             ele.text(subName + " is already in use in this category.");
+                             ele.css('color', 'red');
+                         }
+                     },
+                     error: function (err) {
+                         alert(err);
+                     }
+
+                 });
+             }
+         });
+     });
+     function empty() {
+         document.getElementById("txt3").value = "";
+         document.getElementById("req").innerHTML = "";
+     }
+ </script> 
+</body>

@@ -1,0 +1,68 @@
+﻿
+        body {
+            overflow-y: scroll;
+            overflow-x: hidden;
+            overflow: -moz-scrollbars-none;
+            -ms-overflow-style: none;
+        }
+        body::-webkit-scrollbar {
+            width: 0 !important;
+        }
+
+        .text_box {
+            padding: 2px;
+            width: 70%;
+            
+        }
+        .dropdown{
+            padding: 2px;
+            width:35%;
+        }
+        .post{
+            border-bottom-width:0px;
+            border-top-width:0px;
+            border-left-width:0px;
+            border-right-width:5px;
+            border-style:solid;
+            border-color:rgb(245, 98, 98);
+        }
+        .modal-dialog{
+            left:0%;
+            top:35%;
+        }
+        #summernote{
+            z-index:9999999;
+        }
+        
+        #txtsubcatid {
+            z-index: 99999999;
+        }
+         .rows {
+            width: 100%;
+        }
+        #rowtd {
+            width: 120px;
+            color: black;
+            text-align: center;
+            font-weight: bold;
+            height: 30px;
+            border-bottom-width: 0px;
+            border-top-width: 0px;
+            border-left-width: 2px;
+            border-right-width: 2px;
+            border-style: solid;
+            border-color: black;
+        }
+        #headtd {
+            width: 120px;
+            color: Red;
+            text-align: center;
+            font-weight: bolder;
+            height: 40px;
+            border-bottom-width:2px;
+            border-style:solid;
+            border-color:black;
+            border-top-width:2px;
+            margin-top:20px;
+            margin-bottom:10px;
+        }

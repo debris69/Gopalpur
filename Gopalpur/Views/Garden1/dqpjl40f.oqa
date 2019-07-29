@@ -1,0 +1,169 @@
+﻿@model Garden 
+@{
+    ViewBag.Title = "Add";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var data = ViewData["temp"];
+    var data2 = ViewData["temp2"];
+    
+}
+
+
+<style>
+    #sty {
+        
+        height: 150px;
+        width: 30%;
+        text-align:center;
+    }
+     #tdsty
+     {
+         text-align:center;
+     }
+    
+</style>
+
+@Html.Raw(data)
+@Html.Raw(data2)
+ 
+
+    
+        <div class="container">
+            <div class="row" style="padding-top:10%">
+           <div class="col-sm-4">
+@using (Html.BeginForm("Add", "Garden1", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+                    <div class="form-horizontal" style="background-image: linear-gradient(to bottom right,lightseagreen, white); border: solid; border-color: black; border-radius: 10px; text-align:center; ">
+
+                        <h1 style="text-align:center;color:black">Upload your desired image</h1>
+                        <hr />
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Title, new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(model => model.Title, new { id = "titletxt" })
+                                @Html.ValidationMessageFor(model => model.Title)
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.ImagePath, new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                <input type="file" name="ImageFile" />
+                            </div>
+                        </div>
+
+
+                        <span style="color:green">@ViewBag.Message</span>
+
+                        <br />
+
+                       <div class="form-group">
+                            <div class="col-md-10" style="text-align:center;">
+                                <button type="submit" name="Submit" value="Submit" class=" btn btn-success" onclick="display();">Submit</button>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                
+                    <br />
+    
+}
+             </div>
+
+
+<div class="col-sm-8">
+    <table id="tbl" style="border:2px solid black;">
+        <tr>
+
+            
+            <td style="text-align:center">Images</td>
+            <td style="text-align:center">Buttons</td>
+
+
+        </tr>
+    </table>
+</div>
+            </div>
+
+            </div>
+    
+     
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script>
+
+    //for (var j = 0; j < imgtitle.Count - 1; j++)
+    //{
+
+    //    var newRow = document.createElement("tr");
+    //    var colstitle = document.createElement("td");
+    //    var node1 = document.createTextNode(imgtitle[imgtitle.Keys.ElementAt(j)]);
+    //    colstitle.appendChild(node1);
+    //    newRow.appendChild(colstitle);
+    //    var parent = document.getElementById("tbl");
+    //    parent.appendChild(newRow);
+
+    //}
+
+   for (var i = 0; i < array.length - 1; i++)
+        {
+
+            var newRow = document.createElement("tr");
+            var colsimg = document.createElement("td");
+            var at2 = document.createAttribute("id");
+            at2.value = "tdsty";
+            colsimg.setAttributeNode(at2);
+
+            var imgEle = document.createElement("img");
+
+            var attr = document.createAttribute("src");
+            attr.value = array[i];
+            var att = document.createAttribute("id");
+            att.value = "sty";
+
+            var colsbtn = document.createElement("td");
+            var ele = document.createElement("button");
+            var att1 = document.createAttribute("value");
+            att1.value = "Delete";
+            var node1 = document.createTextNode("Delete");
+            var at = document.createAttribute("class");
+            at.value = "linkdelete";
+            ele.setAttributeNode(at);
+            ele.appendChild(node1);
+            ele.setAttributeNode(att1);
+            var att3 = document.createAttribute("onclick");
+            att3.value ="btn_click(this)";
+            ele.setAttributeNode(att3);
+
+            imgEle.setAttributeNode(att);
+            imgEle.setAttributeNode(attr);
+            colsimg.appendChild(imgEle);
+            colsbtn.appendChild(ele);
+
+
+            newRow.appendChild(colsimg);
+            newRow.appendChild(colsbtn);
+            var parent = document.getElementById("tbl");
+            parent.appendChild(newRow);
+
+   }
+
+ function btn_click(ele)
+ {
+     var data = ele.parentNode.parentNode.childNodes[0].childNodes[0].getAttribute("src");
+     $.ajax({
+         type: "Post",
+         url: "./Delete",
+         data: { path: data },
+         success: function (ele) {
+
+             document.location.reload();
+         }
+     });
+ }
+
+</script>
+

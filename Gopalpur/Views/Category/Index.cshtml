@@ -1,0 +1,329 @@
+﻿@model Category
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutPageAdmin.cshtml";
+}
+<head>
+    <style>
+       
+        .button{
+            width:30%;
+            }
+
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            padding-top: 100px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            height:150px;
+        }
+    </style>
+</head>
+<script src="/Scripts/Category.js"></script>
+
+@Html.Raw(ViewBag.Temp)
+
+<form method="post" id="catform" onsubmit="event.preventDefault();">
+    <div class="container" style="margin-top:60px;margin-left:450px" id="addtable">
+
+        <h1>Add Category</h1>
+        <p>*Enter the details below only if you want to add a new category</p>
+        <p style="color:green;font-weight:bolder;">@ViewBag.mssg</p>
+        <table border="0" cellpadding="15" style="border-width: 2px; font-size:medium;">
+            <tr>
+                <td>
+                    @Html.LabelFor(x => x.catname, new { id = "lblCatName" }) 
+                </td>
+                <td>
+                    @Html.TextBoxFor(m => m.catname, new { id = "txtCatName", oninput = "clearError();" })
+                </td>
+                <p id="reqname" style="color:red;"></p>
+            </tr>
+            
+            <tr>
+                <td>
+                    @Html.LabelFor(x => x.active, new { id = "lblActive" })
+                </td>
+                <td>
+                    <input type="checkbox" id="check" onchange="ifchecked();" /> Yes
+                    @Html.TextBoxFor(m => m.active, new { id = "txtActive", @readonly = "readonly", @style = "display:none;" })
+                </td>
+            </tr>
+        </table>
+        <br />
+        <table>
+            <tr>
+                <td>
+                    <input type="button" value="Save" class="btn btn-success" onclick="validate();checkduplicacy();">
+                </td>
+                <td>
+                    <input type="button" value="Update" onclick="show();" class="btn btn-success" />
+                </td>
+                <td>
+                    <input type="button" onclick="toclear();" value="Clear" class="btn btn-success">
+                </td>
+            </tr>
+        </table>
+    </div>
+</form>
+                                                                                                                                                                                                                                          
+        <form method="post" id="updateform">
+            <div id="updateList" class="container" style="display: none; margin-top:60px;margin-left:300px;">
+                <h1>Update Category</h1><br />
+                <p style="color:red;font-weight:bolder;" id="updatemsg"></p>
+                <table border="0" cellpadding="9" style="font-size:medium;">
+                    <tr>
+                        <td> @Html.LabelFor(x => x.updatecat, new { id = "lblUpdateCatName" })</td>
+                        <td>
+                            <select id="selectCategory" oninput="catid(); checkactive(); hideerror();" onclick="nullcategory();">
+                                <option>--CHOOSE A CATEGORY--</option>
+                            </select>
+                            
+                            @Html.TextBoxFor(m => m.updatecat, new { id = "txtUpdateCatName", @readonly = "readonly", @placeholder = "ID(auto-generated)", onclick = "selectName();" })
+                            @Html.TextBoxFor(m => m.active, new { id = "ifactive", @readonly = "readonly", @placeholder = "Active", onclick = "selectName();" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(x => x.newcat, new { id = "lblNewCatName" })
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.newcat, new { id = "txtNewCatName", oninput = "clearError1();" })
+                        </td>
+                        <p id="reqname1" style="color:red;"></p>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(x => x.newActive, new { id = "lblActive" })
+                        </td>
+                        <td>
+                            <input type="checkbox" id="newcheck" oninput="ifnewchecked();" /> Yes
+                            @Html.TextBoxFor(m => m.newActive, new { id = "txtNewActive", @readonly = "readonly",@style="display:none;" })
+
+                        </td>
+                    </tr>
+                </table>
+                <table border="0" style="text-align:center">
+                    <tr>
+                        <td align="center">
+                            <input type="button" value="save" class="btn btn-success" onclick="validation();" />
+                        </td>
+                    </tr>
+                    <tr></tr>
+                    <tr>
+                        <td style="align-content:center;"><a href="http://localhost:52280/Category/Index" id="back">Back</a></td>
+                    </tr>
+                </table>
+            </div>
+</form>
+
+    <div id="myModal" class="modal">
+        <div class="modal-content" style="padding:20px; border:2px solid black; width:400px; margin-top:200px;margin-left:500px;">
+            
+            <div class="modal-header">Are you sure you want to update ?</div>
+            <br />
+            <div class="btn-group float-right">
+                <input type="button" value="Yes" class="button" onclick="validateUpdate();" /> &nbsp;
+                <input type="button" value="No" class="button" onclick="blockmodal();" />
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+    <script type="text/javascript">
+
+        //Dropdown List for Category Name in Update Category Table
+        var select = document.getElementById("selectCategory");
+        var category = availablecategory;
+        for (var key in category) {
+            var opt = key;
+            var el = document.createElement("option");
+            el.textContent = opt;
+            el.value = opt;
+            select.appendChild(el);
+
+        }
+
+        function nullcategory()
+        {
+            if (document.getElementById("selectCategory").value == ("--CHOOSE A CATEGORY--")) {
+            document.getElementById("txtUpdateCatName").value = "";
+            document.getElementById("ifactive").value = "";
+        }
+        }
+
+        //Removing error message on entering Name
+        function clearError() {
+            document.getElementById("reqname").style.display = "none";
+        }
+
+        function clearError1() {
+            document.getElementById("reqname1").style.display = "none";
+        }
+
+        //Close the modal on clicking No
+        function blockmodal() {
+            document.getElementById("myModal").style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == document.getElementById("myModal")) {
+                document.getElementById("myModal").style.display = "none";
+            }
+        }
+
+        //Add Category Validation
+        function validate() {
+            if (document.getElementById("txtCatName").value === "") {
+                var x = document.getElementById("reqname");
+                x.style.display = "block";
+                x.innerHTML = "Category Name Required !";
+            }
+
+            else {
+                $.ajax({
+                    type: "post",
+                    url: "./Index",
+                    success: function (xyz) {
+                        var frm = document.getElementById("catform");
+                        frm.submit();
+                    }
+
+                });
+            }
+        }
+
+        //Existing Category Validation
+        function checkduplicacy() {
+            if (document.getElementById("txtCatName").value === "") {
+                var x = document.getElementById("reqname");
+                x.style.display = "block";
+                x.innerHTML = "Category Name Required !";
+            }
+            else {
+                for (var key in availablecategory) {
+                    if (document.getElementById("txtCatName").value === key) {
+                        var x = document.getElementById("reqname");
+                        x.style.display = "block";
+                        x.innerHTML = "Category Name already Exists !";
+                        document.getElementById("txtCatName").value = "";
+                    }
+                }
+
+            }
+
+        }
+
+        //Display Modal Box and validation
+        function validation()
+        {
+            if (document.getElementById("txtNewCatName").value == "") {
+                var x = document.getElementById("reqname1");
+                x.style.display = "block";
+                x.innerHTML = "Category Name Required !";
+
+            }
+            else {
+                document.getElementById("myModal").style.display = "block";
+            }
+        }
+        //Updating Category Validation
+        function validateUpdate() {
+                document.getElementById("updatemsg").innerHTML = "";
+                $.ajax({
+                    type: "post",
+                    url: "./Index",
+                    success: function (xyz) {
+                        var frm = document.getElementById("updateform");
+                        frm.submit();
+                    }
+
+                });
+            }
+        
+
+        //Show Update Table
+        function show() {
+            var ele = document.getElementById("updateList");
+            ele.style.display = "block";
+            document.getElementById("addtable").style.display = "none";
+        }
+
+
+        //Automatic Category ID For Update Category
+        function catid() {
+            for (var g in availablecategory) {
+                if (g == document.getElementById("selectCategory").value) {
+                    document.getElementById("txtUpdateCatName").value = category[g];
+                }
+
+            }
+        }
+
+        //Automatic Active For Update Category
+        function checkactive() {
+            for (var g in availablecategory1) {
+                if (g == document.getElementById("selectCategory").value) {
+                    document.getElementById("ifactive").value = availablecategory1[g];
+                }
+            }
+        }
+
+        //Checkbox for Active field
+        function ifchecked() {
+
+            if (document.getElementById("check").checked == false)
+                document.getElementById("txtActive").value = "N";
+            else if (document.getElementById("check").checked == true)
+                document.getElementById("txtActive").value = "Y";
+        }
+
+        //Checkbox for Active field in Update Table
+        function ifnewchecked() {
+            if (document.getElementById("newcheck").checked == false)
+                document.getElementById("txtNewActive").value = "N";
+            else if (document.getElementById("newcheck").checked == true)
+                document.getElementById("txtNewActive").value = "Y";
+        }
+
+
+        //Validation
+        function selectName() {
+            var ele = document.getElementById("updatemsg");
+            ele.style.display = "block";
+            ele.innerHTML = "Please select Category Name to update !";
+        }
+
+        function hideerror() {
+            var ele = document.getElementById("updatemsg");
+            ele.style.display = "none";
+        }
+
+        //To reset the form
+        function toclear() {
+            document.getElementById("txtCatName").value = "";
+            document.getElementById("check").checked = "";
+            document.getElementById("reqname").value = "";
+        }
+    </script>
+

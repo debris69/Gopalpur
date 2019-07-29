@@ -1,0 +1,443 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutPageAdmin.cshtml";
+    var data = ViewData["Mssg"];
+}
+
+
+@model Post
+
+<script src="/Scripts/summernote-image-attributes.js"></script>
+<script src="/Scripts/lang/es-ES.js"></script>
+    <style type="text/css">
+        body {
+            overflow-y: scroll;
+            overflow-x: hidden;
+            overflow: -moz-scrollbars-none;
+            -ms-overflow-style: none;
+        }
+        body::-webkit-scrollbar {
+            width: 0 !important;
+        }
+    </style>
+    <style>
+        .text_box {
+            height: 1.7361111111111112vw;
+            width: 60%;
+        }
+        .dropdown {
+            height: 1.7361111111111112vw;
+            width: 60%;
+        }
+        .post{
+            border-bottom-width:0px;
+            border-top-width:0px;
+            border-left-width:0px;
+            border-right-width:5px;
+            border-style:solid;
+            border-color:rgb(245, 98, 98);
+        }
+        #summernote{
+            z-index:9999999;
+        }
+        
+        #txtsubcatid {
+            z-index: 99999999;
+        }
+         .rows {
+            width: 100%;
+        }
+        #rowtd {
+            width: 120px;
+            color: black;
+            text-align: center;
+            font-weight: bold;
+            height: 30px;
+            border-bottom-width: 2px;
+            border-top-width: 0px;
+            border-left-width: 2px;
+            border-right-width: 2px;
+            border-style: solid;
+            border-color: black;
+        }
+        #headtd {
+            width: 120px;
+            color: Red;
+            text-align: center;
+            font-weight: bolder;
+            height: 40px;
+            border-bottom-width:2px;
+            border-style:solid;
+            border-color:black;
+            border-top-width:2px;
+            margin-top:20px;
+            margin-bottom:10px;
+        }
+        .td1{
+            padding:5px;
+        }
+    </style>
+
+    @Html.Raw(ViewBag.mydata)
+    <script type="text/javascript">
+        function preventBack() { window.history.forward(); }
+        setTimeout("preventBack()", 0);
+        window.onunload = function () { null };
+    </script>
+    <div>
+        <div class="row">
+            <div style="text-align: center; font-family: 'Microsoft JhengHei UI'; margin-top: 50px;" class="col-lg-12 col-sm-12 col-xs-12 col-md-12">
+                <h2> Content Management System</h2>
+            </div>
+            
+        </div>
+
+        <hr />
+        <div style="color:black;text-align:center" id="mssg"><br />@data</div>
+        <div style="margin-top:0px; font-family:'Microsoft JhengHei UI'" class="row">
+            <div class="col-lg-7 col-xs-7 col-sm-12 post" style="margin-left:30px">
+                <center>
+                    <form method="post" id="myform" onsubmit="event.preventDefault(); submitFrm()">
+                        <div style="display:none;">
+                            @Html.TextBoxFor(m => m.flag, new { id = "txtflag" })
+                        </div>
+
+
+                        <table id="createnew" border="0">
+                            <tr>
+                                <td class="td1"><b> Select Option: </b></td>
+                                <td class ="td1">
+                                    <select id="flgchoice" class="dropdown" onchange="getflag();" style="height: 1.7361111111111112vw; width: 60%;">
+                                        <option value=" ">
+                                        --SELECT ONE--</option>
+                                        <option value="0">Create New</option>
+                                        <option value="1" id="selectme">Update Old</option>
+                                        <option value="2" id="deleteme">Delete Old</option>
+                                    </select>
+                                </td>
+                            </tr>
+                       
+                            <tr>
+                                <td class="td1"> @Html.LabelFor(m => m.post_title, new { id = "lblposttitle" })</td>
+                                <td class="td1"> @Html.TextBoxFor(m => m.post_title, new { id = "txtTitle", @class = "text_box" })</td>
+                            </tr>
+                           
+                            <tr>
+                                <td class="td1"> @Html.LabelFor(m => m.catid, new { id = "lblcatid" })</td>
+                                <td class="td1"> <select id="selectNumber" onchange="change();" style="height: 1.7361111111111112vw; width: 60%;"></select> @Html.TextBoxFor(m => m.catid, new { id = "txtcatid", @class = "text_box", style = "display:none;" })</td>
+                            </tr>
+                           
+                            <tr>
+                                <td class="td1"> @Html.LabelFor(m => m.subcatid, new { id = "lblsubcatid" })</td>
+                                <td class="td1"> <select id="selectNumber1" onclick="change2();" style="height: 1.7361111111111112vw; width: 60%;"></select> @Html.TextBoxFor(m => m.subcatid, new { id = "txtsubcatid", @class = "text_box", style = "display:none;" }) </td>
+                            </tr>
+                           
+                            <tr>
+                                <td class="td1"> @Html.LabelFor(m => m.active, new { id = "lblactive" })</td>
+                                <td class="td1"> @Html.DropDownListFor(m => m.active, new SelectList(Enum.GetValues(typeof(choice))), new { id = "drpactive", @class = "dropdown"  })</td>
+                            </tr>
+                            
+                            <tr>
+                                <td colspan="2" class="td1">@Html.LabelFor(m => m.post, new { id = "lblpost" })</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" class="td1">
+                                    @Html.TextAreaFor(m => m.post, new { id = "summernote", @name = "editordata" })
+                                </td>
+                            </tr>
+                        </table>
+                        <input type="Submit" value="Submit" class="btn btn-success" /> <input type="button" value="Clear" onclick="cleared();" class="btn btn-danger" />
+                    </form>
+                </center>
+            </div>
+            <div class="col-lg-4 col-xs-4 col-sm-12">
+                <center>
+                    <h3 style="font-size:14px;font-weight:bold;color:Black">Server Operations</h3>
+                    <br />
+                    <span style="font-size:14px;font-weight:bold;color:red">** Please upload all the images before creating the content !!</span>
+                    <br /><br />
+                    @using (Html.BeginForm("AddFile", "Post", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <table>
+                            <tr>
+                                <td> Select File: </td>
+                                <td> &nbsp;</td>
+                                <td> <input type="file" name="postedFile" /></td>
+                                <td> <input type="submit" value="Upload" class="btn btn-primary"/></td>
+                            </tr>
+                        </table>
+                        <br />
+                        <span style="color:green">@ViewBag.Message</span>
+                    }
+                    <br />
+                    @using (Html.BeginForm("RemoveFileFromServer", "Post", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <span>File Path :</span>
+                        <input type="text" name="path" />
+                        <input type="submit" value="Delete" class="btn btn-danger" />
+                        <br />
+                    }
+                </center>
+                <br />
+                <div style="width:100%;margin-top:50px;">
+                    <center style="font-weight:bold;color:blue;font-size:30px;">
+                        Active Posts
+                    </center>
+                    <table style="margin-top:5px;">
+                        <tr>
+                            <td id="headtd">Post Title</td>
+                            <td id="headtd">Cat Name</td>
+                            <td id="headtd">SubCat Name</td>
+                            <td id="headtd">Click To Edit</td>
+                            <td id="headtd">Click To Delete</td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" style="height:10px"></td>
+                        </tr>
+                        @Html.Raw(@ViewBag.htmlstr)
+                    </table>
+                    <br />
+                    <center style="font-weight:bold;color:blue;font-size:30px;">
+                        Inactive Posts
+                    </center>
+                    <table style="margin-top:5px;">
+                        <tr>
+                            <td id="headtd">Post Title</td>
+                            <td id="headtd">Cat Name</td>
+                            <td id="headtd">SubCat Name</td>
+                            <td id="headtd">Click To Edit</td>
+                            <td id="headtd">Click To Delete</td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" style="height:10px"></td>
+                        </tr>
+                        @Html.Raw(@ViewBag.htmlstr1)
+                    </table>
+                </div>
+                
+            </div>
+        </div>
+        <br /><br />
+    </div> 
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Modal Header</h4>
+            </div>
+            <div class="modal-body">
+                <p>This is a small modal.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+    <script>
+        var dom = {};
+        dom.query = jQuery.noConflict(true);
+        function init() {
+            document.getElementById("myform").reset();
+            document.getElementById("txtTitle").value = "";
+            dom.query("#summernote").summernote('code', null);            
+        }
+        window.onload = init;
+        function cleared() {
+            document.getElementById("mssg").innerHTML = "";
+            document.getElementById("myform").reset();
+            document.getElementById("txtTitle").value = "";
+            dom.query("#summernote").summernote('code', null);
+        }
+
+        var arrayofnumbers = []
+        for (var i = 8; i <= 52; i = i + 2)
+        {
+            arrayofnumbers.push(i.toString());
+        }
+       
+        dom.query('#summernote').summernote({
+            height:"300px",
+            fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Buxton Sketch', 'Cambria', 'Cambria Math', 'SketchFlow Print', 'Bahnschrift Light', 'Gabriola', 'Ink Free', 'Segoe Print', 'Segoe Script', 'Sylfaen', 'Segoe UI', 'Segoe Marker', 'Sitka', 'Tahoma', 'Verdana', 'Trebuchet MS', 'Calibri Light', 'Calibri', 'Microsoft New Tai Lue', 'Lucida Console', 'Impact', 'Georgia', 'Corbel', 'Consolas', 'Candara'],
+            fontSizes: arrayofnumbers,
+            fontNamesIgnoreCheck: ['Buxton Sketch', 'Cambria', 'Cambria Math', 'SketchFlow Print', 'Bahnschrift Light', 'Gabriola', 'Ink Free', 'Segoe Print', 'Segoe Script', 'Sylfaen', 'Segoe UI', 'Segoe Marker', 'Sitka', 'Tahoma', 'Verdana', 'Trebuchet MS', 'Calibri Light', 'Calibri', 'Microsoft New Tai Lue', 'Lucida Console', 'Impact', 'Georgia', 'Corbel', 'Consolas', 'Candara'],
+            toolbar: [
+              ['style', ['bold', 'italic', 'underline', 'clear']],
+              ['font', ['fontname','strikethrough', 'superscript', 'subscript']],
+              ['fontsize', ['fontsize']],
+              ['color', ['color']],
+              ['para', ['ul', 'ol', 'paragraph','height','table']],
+              ['height', ['height']],
+              ['picture', ['picture', 'link', 'video','hr']],
+              ['fullscreen',['fullscreen','undo','redo','codeview']]
+            ],
+            popover: {
+                image: [
+                    ['custom', ['imageAttributes']],
+                    ['imagesize', ['imageSize100', 'imageSize50', 'imageSize25']],
+                    ['float', ['floatLeft', 'floatRight', 'floatNone']],
+                    ['remove', ['removeMedia']]
+                ],
+                link: [['link', ['linkDialogShow', 'unlink']]],
+                table: [
+                  ['add', ['addRowDown', 'addRowUp', 'addColLeft', 'addColRight']],
+                  ['delete', ['deleteRow', 'deleteCol', 'deleteTable']],
+                ]
+            },
+            lang: 'en-US',
+            imageAttributes: {
+                icon: '<i class="note-icon-pencil"/>',
+                removeEmpty: false,
+                disableUpload: false
+            }
+        });
+        dom.query(document).ready(function () {
+            dom.query('#summernote').summernote();
+        });
+        
+    </script>
+    <script>
+    function getflag() {
+        var val = document.getElementById("flgchoice").value;
+        if (val === '0') {
+            document.getElementById("txtflag").value = '0';
+        }
+        else
+            document.getElementById("txtflag").value = "1";
+    }
+    </script>
+    <script>
+        
+        function gotoHome()
+        {
+            if (confirm("Are you sure !"))
+            {
+                window.location = "./RedirectToHome";
+            }
+            else
+            {
+
+            }
+        }
+        function gotoRegister() {
+              window.location = "./RedirectToRegister";
+        }
+        function gotoSubcategory()
+        {
+            window.location = "./RedirectToSubcategory";
+        }
+        function gotoCategory()
+        {
+            window.location = "./RedirectToCategory";
+        }
+        function fillform(str)
+        {
+            document.getElementById("selectme").selected = true;
+            document.getElementById("txtflag").value = '1';
+            document.getElementById("txtTitle").value = document.getElementById(str).childNodes[0].textContent;
+            document.getElementById("txtcatid").value = catid1[document.getElementById(str).childNodes[1].textContent];
+            generatesub();
+            document.getElementById("txtsubcatid").value = subcatid2[document.getElementById(str).childNodes[2].textContent];
+            document.getElementById("selectNumber").value = document.getElementById(str).childNodes[1].textContent;
+            document.getElementById("selectNumber1").value = document.getElementById(str).childNodes[2].textContent;
+            var x = document.getElementById(str).childNodes[3].innerHTML;
+            dom.query("#summernote").summernote('code', x);
+        }
+
+        function fillformDel(str) {
+            document.getElementById("deleteme").selected = true;
+            document.getElementById("txtflag").value = '2';
+            document.getElementById("txtTitle").value = document.getElementById(str).childNodes[0].textContent;
+            document.getElementById("txtcatid").value = catid1[document.getElementById(str).childNodes[1].textContent];
+            generatesub();
+            document.getElementById("txtsubcatid").value = subcatid2[document.getElementById(str).childNodes[2].textContent];
+            document.getElementById("selectNumber").value = document.getElementById(str).childNodes[1].textContent;
+            document.getElementById("selectNumber1").value = document.getElementById(str).childNodes[2].textContent;
+            var x = document.getElementById(str).childNodes[3].innerHTML;
+            dom.query("#summernote").summernote('code', x);
+            if (confirm("Are you sure !!"))
+                submitFrm();
+        }
+
+        var select = document.getElementById('selectNumber');
+        var el = document.createElement("option");
+        el.textContent = "---Select Here---";
+        el.value = "";
+        el.selected = true;
+
+        select.appendChild(el);
+        var categories = catid;
+        for (var key in catid) {
+            var opt = categories[key]
+            var el = document.createElement("option");
+            el.textContent = opt;
+            el.value = opt;
+            select.appendChild(el);
+        }
+
+        function change() {
+            var val = document.getElementById('selectNumber').value;
+            var categories = catid;
+            for (var key in categories) {
+
+                if (categories[key] === val) {
+                    document.getElementById('txtcatid').value = key;
+                }
+            }
+         
+            generatesub();
+        }
+
+        function change2() {
+            var val = document.getElementById("selectNumber1").value;
+            if (document.getElementById("selectNumber1").value == "") {
+                document.getElementById("txtsubcatid").value = "";
+            }
+            else {
+                var categories = subcatid1;
+                for (var key in categories) {
+                    if (categories[key] === val) {
+                        document.getElementById("txtsubcatid").value = key;
+                    }
+                }
+            }          
+        }
+
+        function generatesub(){
+            var select = document.getElementById('txtcatid').value;
+            var select1 = document.getElementById('selectNumber1');
+            select1.innerHTML = "";
+            document.getElementById("txtsubcatid").value = "";
+            var categories = subcatid1;
+            var arr = ['', ];
+
+            for (var x in subcatid) {
+                if (subcatid[x] === select) {
+                    arr.push(x);
+                }
+            }
+            var el = document.createElement("option");
+            el.textContent = "---Select Here---";
+            el.value = "";
+            el.selected = true;
+
+            select1.appendChild(el);
+            for (var key in categories) {
+                var n = arr.includes(key);
+                if (n == true) {
+                    var opt = categories[key]
+                    var el = document.createElement("option");
+                    el.textContent = opt;
+                    el.value = opt;
+                    
+                    select1.appendChild(el);
+                }
+            }
+        }
+        function submitFrm() {
+            if (document.getElementById("txtsubcatid").value === "undefined" || document.getElementById("txtsubcatid").value === "")
+                document.getElementById("txtsubcatid").value = -1;
+            document.getElementById("myform").submit();
+        }
+    </script>

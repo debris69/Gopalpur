@@ -1,0 +1,128 @@
+﻿@model Garden 
+@{
+    ViewBag.Title = "Add";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var data = ViewData["temp"];
+}
+
+<h2>Add</h2>
+
+
+ 
+ @using (Html.BeginForm("Add", "Garden1", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.Raw(data)
+        <div class="container">
+            <div class="row" style="padding-top:10%">
+                <div class="col-sm-4">
+
+                    <div class="form-horizontal" style="background-color:lightseagreen;border:solid;border-color:black; border-radius:10px;">
+
+                        <h1 style="text-align:center;color:black">Upload your desired image</h1>
+                        <hr />
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Title, new {  @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Title, new { id = "titletxt" })
+                                @Html.ValidationMessageFor(model => model.Title)
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.ImagePath, new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                <input type="file" name="ImageFile" required />
+                            </div>
+                        </div>
+
+
+                        <span style="color:green">@ViewBag.Message</span>
+
+                        <br />
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.ImageText, new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.TextAreaFor(model => model.ImageText, new { id = "imgtxt" })
+                                @Html.ValidationMessageFor(model => model.ImageText)
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.TextHeading, new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.TextHeading, new { id = "txthd" })
+                                @Html.ValidationMessageFor(model => model.TextHeading)
+                            </div>
+                        </div>
+
+                        <br />
+
+                        <div class="form-group">
+                            <div class="col-md-10" style="text-align:center;">
+                                <input type="submit" value="Upload" class="btn btn-success" name=""  />
+                            </div>
+                        </div>
+
+
+                    </div>
+                
+                    <br />
+
+             </div>
+
+                <div class="col-sm-8">
+                    <table  id="tbl" style="border:2px solid black;">
+                        <tr>
+                            <td>ImageId</td>
+                            <td>Title</td>
+                            <td>Images</td>
+                            
+                            
+                        </tr>
+                    </table>
+                </div>
+
+            </div>
+
+            </div>
+            
+       }
+
+<table>
+
+</table>
+@*<script>
+
+    for (var i = 1; i < array.length - 1; i++)
+    {
+        var newRow = document.createElement("tr");
+        var node;
+        var colsid = document.createElement("td");
+        node = document.createTextNode("1");
+        colsid.appendChild(node);
+
+        var colstitle = document.createElement("td");
+        node1 = document.getElementById("titletxt").value;
+        colstitle.appendChild(node1);
+
+        var colsimg = document.createElement("td");
+        var imgEle = document.createElement("img");
+
+        var attr = document.createAttribute("src");
+        attr.value = array[i];
+        imgEle.setAttributeNode(attr);
+
+
+        newRow.appendChild(colstitle);
+        newRow.appendChild(colsimg);
+        var parent = document.getElementById("tbl");
+        parent.appendChild(newRow);
+
+    }
+
+    
+
+
+</script>*@
+ 

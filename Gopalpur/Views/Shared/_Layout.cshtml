@@ -1,0 +1,156 @@
+﻿@model List<SubCategory>
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <!-- include summernote css/js -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.js"></script>
+
+    <style>
+        .logo {
+            width: 70%;
+            height: 70%;
+            align-content:center;
+        }
+
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: black;
+            color: white;
+            text-align: center;
+            z-index: 99999;
+        }
+        .note-toolbar {
+            background-color:lightgray;
+        }
+
+        .panel-heading {
+            background-color: lightgray;
+        }
+        body {
+            background-color: white;
+            overflow-x:hidden;
+            overflow-y:scroll;
+            padding:0px;
+        }
+        .bg-light {
+            background-color: white;
+            transition: 0.5s;
+        }
+
+            .bg-light:hover {
+                box-shadow: 0px 1.2091898428053205vh 1.8137847642079807vh rgb(0,0,0);
+            }
+        .nav {
+            border-radius: 15px;
+            position: fixed;
+        }
+        .dropdown-item:hover {
+            background-color: rgba(30, 130, 76, 0.4);
+            text-decoration-color: white;
+            border-radius: 10px;
+        }
+
+        .dropdown-item {
+            transition: 1s;
+        }
+
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-light navbar-light justify-content-center fixed-top">
+        <a class="navbar-brand" href="/"><img src="/Content/img/logo1.png" class="logo" /></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav">
+                @{
+                    foreach (System.Data.DataRow dr in ViewBag.category.Rows)
+                    {
+                        <li class="nav-item dropdown">
+                            @if (Convert.ToInt32(dr["Flag"]) != 1)
+                            {
+                                if (@dr["CategoryName"].ToString() == "Home")
+                                {
+                                    @Html.ActionLink(@dr["CategoryName"].ToString(), "Index", "Home", null, new { @class = "dropdown-item", id = "navbardrop" })
+                                }
+                                else if (@dr["CategoryName"].ToString() == "Login")
+                                {
+                                    @Html.ActionLink(@dr["CategoryName"].ToString(), "Login", "Admin", null, new { @class = "dropdown-item", id = "navbardrop" })
+                                }
+                                else if (@dr["CategoryName"].ToString() == "Gardens")
+                                {
+                                    @Html.ActionLink(@dr["CategoryName"].ToString(), "ViewPage/"+ @dr["catid"], "Garden1", null, new { @class = "dropdown-item", id = "navbardrop" })
+                                }
+                                else
+                                {
+                                    @Html.ActionLink(@dr["CategoryName"].ToString(), "Index/" + @dr["catid"], "URL", null, new { @class = "dropdown-item", id = "navbardrop" })
+                                }
+                            }
+                            else
+                            {
+                                @Html.ActionLink(@dr["CategoryName"].ToString(), "Index/" + @dr["catid"], "URL", null, new { @class = "dropdown-item", id = "navbardrop", data_toggle = "dropdown" })
+                            }
+                            @{
+                        try
+                        {
+                            ((Gopalpur.Controllers.HomeController)this.ViewContext.Controller).get_Submenu(Convert.ToInt32(dr["catid"]));
+                        }
+                        catch (Exception e)
+                        {
+                            if (e.Message == "Unable to cast object of type 'Gopalpur.Controllers.UrlController' to type 'Gopalpur.Controllers.HomeController'.")
+                            {
+                                ((Gopalpur.Controllers.UrlController)this.ViewContext.Controller).get_Submenu(Convert.ToInt32(dr["catid"]));
+                            }
+                            else
+                            {
+                                ((Gopalpur.Controllers.Garden1Controller)this.ViewContext.Controller).get_Submenu(Convert.ToInt32(dr["catid"]));
+                            }
+                        }
+
+                            }
+                            @if (Convert.ToInt32(dr["Flag"]) != 0)
+                            {
+                                <div class="dropdown-menu">
+                                    @{
+                                try
+                                {
+                                    foreach (SubCategory subitem in Session["submenu"] as List<SubCategory>)
+                                    {
+                                        @Html.ActionLink(@subitem.SubCategoryName, "Index/" + @subitem.SubID, "URL", null, new { @class = "dropdown-item" })
+                                    }
+                                }
+                                catch (Exception e)
+                                { }
+                                    }
+                                </div>
+                            }
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Header part end-->
+    @RenderBody()
+           <div class='footer'>
+                              
+              | © 2015 The Gopalpur Tea Company Limited. All rights Reserved | <br />
+             
+           </div>
+       
+</body>
+</html>

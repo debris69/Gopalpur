@@ -1,0 +1,198 @@
+﻿@model List<SubCategory>
+@{
+    ViewBag.Title = "ViewPage";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    //Layout = null;
+    var data = ViewData["temp"];
+}
+<head>
+    <title>HH</title>
+    <!-- Latest compiled and minified CSS -->
+    @*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">*@
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    @*<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>*@
+
+    @*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">*@
+    @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>*@
+    @*<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>*@
+</head>
+
+<style>
+    .carousel-item {
+        width: 710px;
+        height: 507.2px;
+    }
+    #sty{
+        width: 710px;
+        height: 507.2px;
+    }
+    .carousel-inner{
+        border-radius:50px;
+    }
+  
+  
+    .dropdown-item:hover {
+        background-color: rgba(30, 130, 76, 0.4);
+        text-decoration-color: white;
+        border-radius: 10px;
+    }
+   
+   
+    /*.tbl {
+        border: solid;
+        border-color: darkolivegreen;
+        border-radius: 1em;
+        padding-bottom: 10%;
+        padding-top: 50%;
+        
+    }*/
+   
+</style>
+
+@Html.Raw(data)
+
+@*<center style="padding-bottom:5%;padding-top:5%">
+    <table class="tbl">
+        <tr>
+            <td style="color: darkolivegreen"><span class="glyphicon glyphicon-picture fa-3x"></span></td>
+            &nbsp;
+            <td style="text-align: center; color: darkolivegreen; padding-top: 10%; padding-bottom: 2% ; border-radius: 1em;"><h1>Image Gallery</h1></td>
+            
+        </tr>
+    </table>
+</center>*@
+
+
+
+    
+    <div class="container" style="padding-top:9.15%; margin-top:60px">
+
+        <div class="row" style="width:100%">
+
+            <div class="col-sm-12 col-lg-4 col-md-12"  style="width:100%">
+                <h1  id="hd" style="text-align:center;font-family:'Microsoft JhengHei UI';color:darkgreen;"><b>Welcome to our gardens</b>@*@ViewBag.ImageText*@</h1>
+                <br />
+                <p>
+                    The Gopalpur Tea Estate is situated near Birpara in Alipurduar district of West Bengal, India.Alipurduar is a city and a municipality in the Indian state of West Bengal.
+                    It is the headquarters of the Alipurduar district.
+                    It is situated on the east bank of Kaljani River on the foothills of the Himalayas.Here amongst the festivities of nature lies Birpara,
+                    a small commercial town in the centre of Dooars Region which is famous for being a  hub for transportation and trade for the tea garden region of the area.
+
+                    Herein lies the Gopalpur Tea Estate,which displays an eye catching botanical beauty of tea plantations.
+                    The Green fields of the Estate are sure to capture hearts of anyone who visits.
+                   
+                    @*@ViewBag.TextHeading*@
+                </p>
+
+            </div>
+
+            <div class="col-sm-12 col-lg-8 col-md-12">
+                <div id="demo" class="carousel slide" data-ride="carousel" style="width:100%">
+
+                    <!-- Indicators -->
+                    <ul class="carousel-indicators">
+                        <li data-target="#demo" data-slide-to="0" class="active"></li>
+                        <li data-target="#demo" data-slide-to="1"></li>
+                        <li data-target="#demo" data-slide-to="2"></li>
+                        <li data-target="#demo" data-slide-to="3"></li>
+                        <li data-target="#demo" data-slide-to="4"></li>
+                        <li data-target="#demo" data-slide-to="5"></li>
+                        <li data-target="#demo" data-slide-to="6"></li>
+                        <li data-target="#demo" data-slide-to="7"></li>
+
+
+                    </ul>
+
+                    <!-- The slideshow -->
+                    <div class="carousel-inner" style="width:100%">
+                    </div>
+
+                    <!-- Left and right controls -->
+                    <a class="carousel-control-prev" href="#demo" data-slide="prev">
+                        <span class="carousel-control-prev-icon"></span>
+                    </a>
+                    <a class="carousel-control-next" href="#demo" data-slide="next">
+                        <span class="carousel-control-next-icon"></span>
+                    </a>
+
+                </div>
+
+            </div>
+
+           
+
+        </div>
+        
+            
+
+        </div>
+       
+
+  <script>
+    var divElement = document.createElement("div");
+    var attr1 = document.createAttribute("class");
+    attr1.value = "carousel-item active";
+    divElement.setAttributeNode(attr1);
+
+    var imgElement = document.createElement("img");
+    var att = document.createAttribute("id");
+    att.value = "sty";
+    var attr2 = document.createAttribute("src");
+    attr2.value = array[0];
+    imgElement.setAttributeNode(attr2);
+    imgElement.setAttributeNode(att);
+
+    divElement.appendChild(imgElement);
+
+    var parent = document.getElementsByClassName("carousel-inner")[0];
+    parent.appendChild(divElement);
+
+    for(var i = 1;i<array.length-1;i++ )
+    {
+         divElement = document.createElement("div");
+        attr1 = document.createAttribute("class");
+        attr1.value = "carousel-item";
+        divElement.setAttributeNode(attr1);
+
+        imgElement = document.createElement("img");
+        var att = document.createAttribute("id");
+        att.value = "sty";
+        attr2 = document.createAttribute("src");
+        attr2.value = array[i];
+        imgElement.setAttributeNode(attr2);
+        imgElement.setAttributeNode(att);
+
+        divElement.appendChild(imgElement);
+
+         parent = document.getElementsByClassName("carousel-inner")[0];
+        parent.appendChild(divElement);
+    }
+
+    //var divEle = document.createElement("h1");
+    //attr3 = document.createAttribute("id");
+    //attr3.value = "hd";
+    //divEle.setAttributeNode(attr3);
+
+    //var imghead = document.createTextNode(document.getElementById("txthd").value);
+    //divEle.appendChild(imghead);
+    
+    //var divEle1 = document.createElement("p");
+    //var imgtxt = document.createTextNode(document.getElementById("imgtxt").value);
+    //divEle1.appendChild(imgtxt);
+
+    //var parent1 = document.getElementsByClassName("col-sm-12 col-lg-4 col-md-12");
+    //parent1.appendChild(divEle1);
+
+
+
+    
+    
+</script>
+

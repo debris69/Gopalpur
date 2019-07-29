@@ -1,0 +1,129 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_LayoutPageAdmin.cshtml";
+}
+@model SubCategory
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+
+<style>
+    .txt
+    {
+        width:100%;
+    }
+</style>
+@Html.Raw(ViewBag.str)
+@Html.Raw(ViewBag.str2)
+<body>
+    
+    <form id="simple_form" method="post">
+        <div align="center" style="margin-top:70px;">
+            <p align="left" style="margin-top:50px;margin-left:530px;font-size:30px;">Add New Sub-Category</p>
+            <table cellpadding="10">
+                <tr>
+                   
+                    <td>@Html.LabelFor(x => x.cat_name)
+                    <select id="selectNumber" onchange=" change(); empty();" oninput="return change1();" class="txt">
+                        <option>--CHOOSE A CATEGORY--</option>
+                    </select>
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => x.cat_name, new { id = "cat_box1", @class = "txt", @readonly = "readonly",@style="display:none;"})
+                        @Html.LabelFor(x => x.cat_id)
+                        @Html.TextBoxFor(x => x.cat_id, new { id = "cat_box", @class = "txt", @readonly = "readonly",@style="display:none;"})
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(x => x.SubCategoryName)
+                        @Html.TextBoxFor(x => x.SubCategoryName, new { id = "sub", @class = "txt", oninput = "remove();" })
+                        <br/>
+                    </td>
+
+                </tr>
+                <tr><td><p id="req" style="color:red;"></p></td></tr>
+                
+                <tr>
+                    <td>
+                        @Html.LabelFor(x => x.active)
+                        <input type="checkbox" id="chk" onchange="return newChange();" />
+                        @Html.TextBoxFor(x => x.active, new { id = "yes", @class = "txt", @readonly = "readonly", @style = "display:none;" })
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <input class="btn btn-success" type="button" name="Submit" onclick="display();" value="Submit" id="btn1">
+                        <a href="http://localhost:52280/Sub/DisplayData" class="btn btn-success">Update</a>
+                        <a href="http://localhost:52280/Sub/Index" class="btn btn-success">Clear</a> 
+                       </td>
+                </tr>
+            </table>
+        </div>
+ 
+</form>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="~/Scripts/JScript.js"></script>
+    <script type="text/javascript">
+        function display() {
+            if (document.getElementById("sub").value === "") {
+                document.getElementById("req").innerHTML = "Sub-Category Name is required!";
+            }
+            else {
+                $.ajax({
+                    type: "post",
+                    url: "./Index",
+                    success: function (xyz) {
+                        var frm = document.getElementById("simple_form");
+                        frm.submit();
+                    }
+
+                });
+            }
+
+        }
+        function remove()
+        {
+            document.getElementById("req").innerHTML = "";
+            //document.getElementById("req1").innerHTML = "";
+          
+        }
+        $(document).ready(function () {
+            $('#sub').keyup(function () {
+                var subName = $(this).val();
+                var cat = document.getElementById("cat_box").value;
+                if(subName.length>=1)
+                {
+                    $.ajax({
+                        url: '/Sub/subNameExists',
+                        method: 'post',
+                        data: { name: subName,catid:cat },
+                        dataType: 'json',
+                        success:function(data)
+                        {
+                            var ele = $('#req');
+                            if(data.subNameInUse)
+                            {
+                                ele.text(subName + " is already in use in this category!");
+                                ele.css('color', 'red');
+                            }
+                        }
+
+                    });
+                }
+            });
+        });
+        function empty()
+        {
+            document.getElementById("sub").value = "";
+            document.getElementById("req").innerHTML = "";
+        }
+    </script>
+   
+    <div align="center">
+    <p style="margin-right:70px; display:block;" id="p1">@ViewBag.result</p>
+    </div>
+   
+</body>
+

@@ -1,0 +1,30 @@
+﻿
+@model List<SubCategory>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";   
+}
+
+<style>
+    body {
+        background-image: url(/Content/img/patta.png);
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: bottom;
+        background-attachment: fixed;
+    }
+
+    .main::-webkit-scrollbar {
+        width: 0 !important;
+    }
+
+    .keymg {
+        width: 40%;
+        height: 40%;
+    }
+</style>
+
+<div class="row" style="margin-top:170px;margin-bottom:100px;">
+    <div class="main col-lg-10 offset-lg-1 " style="height:450px;overflow-y:scroll;">
+        @Html.Raw(ViewBag.temp)
+    </div>
+</div>

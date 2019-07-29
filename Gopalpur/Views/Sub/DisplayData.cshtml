@@ -1,0 +1,38 @@
+﻿@model List<SubCategory>
+@{
+    Layout = "~/Views/Shared/_LayoutPageAdmin.cshtml";
+}
+@{var x = 1;} 
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>DisplayData</title>
+</head>
+<body>
+    <div align="center" style="margin-top:20px;" >  
+        <table cellpadding="10" border="2" class="table-sm">
+            <tr>
+                <th align="center">Index</th>
+                <th align="center">Category Name</th>
+                <th align="center">Sub-Category Name</th>
+                <th align="center">Active</th>
+                <th align="center"></th>
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@(x++)</td>
+                    <td>@item.cat_name</td>
+                    <td>@item.SubCategoryName</td>
+                    <td>@item.active</td>
+                    <td>@Html.ActionLink("Update", "Edit", new { id = item.SubID,@class="btn btn-success"})
+</tr>
+            }
+        </table>
+    </div>
+    <p style="margin-top:20px;margin-left:540px;">**For inserting sub-category again,@Html.ActionLink("click here.", "Index", new { id = "link1" })</p>
+</body>
+</html>

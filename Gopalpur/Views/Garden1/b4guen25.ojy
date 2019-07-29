@@ -1,0 +1,73 @@
+﻿
+@{
+    ViewBag.Title = "ViewPage";
+    Layout = null;
+    var data = ViewData["temp"];
+}
+<head>
+    <title>HH</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+
+<h2>ViewPage</h2>
+<div id="demo" class="carousel slide" data-ride="carousel">
+
+    <!-- Indicators -->
+    <ul class="carousel-indicators">
+        <li data-target="#demo" data-slide-to="0" class="active"></li>
+        <li data-target="#demo" data-slide-to="1"></li>
+        <li data-target="#demo" data-slide-to="2"></li>
+    </ul>
+
+    <!-- The slideshow -->
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="~/Image/2017-10-24-flash.jpg" alt="Los Angeles">
+        </div>
+        <div class="carousel-item">
+            <img src="~/Image/2017-10-24-flash.jpg" alt="Chicago">
+        </div>
+        <div class="carousel-item">
+            <img src="~/Image/2017-10-24-flash.jpg" alt="New York">
+        </div>
+    </div>
+
+    <!-- Left and right controls -->
+    <a class="carousel-control-prev" href="#demo" data-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+    </a>
+    <a class="carousel-control-next" href="#demo" data-slide="next">
+        <span class="carousel-control-next-icon"></span>
+    </a>
+
+</div>
+
+<script>
+    for(var i = 0;i<array.length;i++ )
+    {
+        var divElement = document.createElement("div");
+        var attr1 = document.createAttribute("class");
+        attr1.value = "carousel-item";
+        divElement.setAttributeNode(attr1);
+
+        var imgElement = document.createElement("img");
+        var attr2 = document.createAttribute("src");
+        attr2.value = array[i];
+
+        divElement.appendChild(imgElement);
+
+        var parent = document.getElementById("carousel-inner");
+        parent.appendChild(divElement);
+    }
+</script>
+
