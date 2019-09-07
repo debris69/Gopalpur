@@ -18,9 +18,7 @@ namespace Gopalpur.Controllers
         {
             string someHtml = "";
             string someHtml1 = "";
-            if (Session["validated"] == null)
-                return RedirectToAction("Login", "Admin");
-            else
+            
             {
                 var dispData = "<script> var catid={ "  ;
                 var dispData1 = "<script> var catid1={";
